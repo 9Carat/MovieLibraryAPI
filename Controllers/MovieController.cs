@@ -74,15 +74,14 @@ namespace MovieLibraryAPI.Controllers
         {
             try
             {
-                // Check if movie has already been added
-                //if (await _context.GetByUserIdAsync(m => m.Title == movieCreateDTO.Title) != null)
-                //{
-                //    _response.Result = "Movie already added";
-                //    return BadRequest(ModelState);
-                //}
+                //Check if movie has already been added
+                if (await _context.GetByMovieIdAsync(m => m.Title == movieCreateDTO.Title) != null)
+                {
+                    ModelState.AddModelError("Error", "Movie already added to watchlist");
+                    return BadRequest(ModelState);
+                }
                 if (movieCreateDTO == null)
                 {
-                    _response.Result = "DTO is null or empty";
                     return BadRequest(movieCreateDTO);
                 }
                 Movie movie = _mapper.Map<Movie>(movieCreateDTO);
