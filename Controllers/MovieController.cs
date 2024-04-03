@@ -70,36 +70,36 @@ namespace MovieLibraryAPI.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<APIResponse>> AddMovie([FromBody]MovieCreateDTO movieCreateDTO)
+        public async Task<ActionResult<APIResponse>> AddMovie([FromBody]MovieCreateDTO dto)
         {
             try
             {
                 //Check if movie has already been added
-                if (await _context.GetByMovieIdAsync(m => m.Title == movieCreateDTO.Title) != null)
+                if (await _context.GetByMovieIdAsync(m => m.Title == dto.Title) != null)
                 {
                     ModelState.AddModelError("Error", "Movie already added to watchlist");
                     return BadRequest(ModelState);
                 }
-                if (movieCreateDTO == null)
+                if (dto == null)
                 {
-                    return BadRequest(movieCreateDTO);
+                    return BadRequest(dto);
                 }
-                Movie movie = _mapper.Map<Movie>(movieCreateDTO);
+                Movie movie = _mapper.Map<Movie>(dto);
                 await _context.AddMovieAsync(movie);
 
-                foreach (var ratingDTO in movieCreateDTO.Ratings)
+                foreach (var ratingDTO in dto.Ratings)
                 {
                     var rating = _mapper.Map<Rating>(ratingDTO);
-                    rating.Fk_MovieId = movieCreateDTO.Id;
+                    rating.Fk_MovieId = dto.Id;
                     await _context.AddRatingAsync(rating);
                 }
 
-                if (movieCreateDTO.StreamingServices != null)
+                if (dto.StreamingServices != null)
                 {
-                    foreach (var streamingServiceDTO in movieCreateDTO.StreamingServices)
+                    foreach (var streamingServiceDTO in dto.StreamingServices)
                     {
                         var streamingService = _mapper.Map<StreamingService>(streamingServiceDTO);
-                        streamingService.Fk_MovieId = movieCreateDTO.Id;
+                        streamingService.Fk_MovieId = dto.Id;
                         await _context.AddStreamingServiceAsync(streamingService);
                     }
                 }
@@ -115,6 +115,34 @@ namespace MovieLibraryAPI.Controllers
             }
             return _response;
         }
+
+        [HttpPut("{movieId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<APIResponse>> UpdateMovie(Guid movieId, [FromBody] MovieUpdateDTO dto)
+        {
+            try
+            {
+                if (dto == null || movieId != dto.Id)
+                {
+                    return BadRequest(dto);
+                }
+                Movie movie = _mapper.Map<Movie>(dto);
+                await _context.UpdateAsync(movie);
+
+                _response.Result = _mapper.Map<MovieUpdateDTO>(movie);
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.IsSuccess = true;
+                return Ok(_response);
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string> { e.ToString() };
+            }
+            return _response;
+        }
+
 
         [HttpDelete("{movieId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

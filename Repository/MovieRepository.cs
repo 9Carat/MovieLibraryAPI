@@ -69,7 +69,5 @@ namespace MovieLibraryAPI.Repository
             _db.Update(movie);
             await SaveAsync();
         }
-
-
     }
 }
