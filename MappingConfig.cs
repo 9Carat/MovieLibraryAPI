@@ -13,8 +13,10 @@ namespace MovieLibraryAPI
             CreateMap<Movie, MovieUpdateDTO>().ReverseMap();
             CreateMap<Rating, RatingDTO>().ReverseMap();
             CreateMap<Rating, RatingCreateDTO>().ReverseMap();
+            CreateMap<Rating, RatingUpdateDTO>().ReverseMap();
             CreateMap<StreamingService, StreamingServiceDTO>().ReverseMap();
             CreateMap<StreamingService, StreamingServiceCreateDTO>().ReverseMap();
+            CreateMap<StreamingService, StreamingServiceUpdateDTO>().ReverseMap();
             CreateMap<ApplicationUser, ApplicationUserDTO>().ReverseMap();
         }
     }

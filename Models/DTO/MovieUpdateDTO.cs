@@ -14,7 +14,5 @@
         public string Awards { get; set; }
         public string Poster { get; set; }
         public string Fk_UserId { get; set; }
-        public virtual ICollection<RatingCreateDTO> Ratings { get; set; }
-        public virtual ICollection<StreamingServiceCreateDTO> StreamingServices { get; set; }
     }
 }

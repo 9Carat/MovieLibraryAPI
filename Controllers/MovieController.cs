@@ -132,7 +132,6 @@ namespace MovieLibraryAPI.Controllers
 
                 _response.Result = _mapper.Map<MovieUpdateDTO>(movie);
                 _response.StatusCode = HttpStatusCode.OK;
-                _response.IsSuccess = true;
                 return Ok(_response);
             }
             catch (Exception e)
