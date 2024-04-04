@@ -87,23 +87,6 @@ namespace MovieLibraryAPI.Controllers
                 Movie movie = _mapper.Map<Movie>(dto);
                 await _context.AddMovieAsync(movie);
 
-                foreach (var ratingDTO in dto.Ratings)
-                {
-                    var rating = _mapper.Map<Rating>(ratingDTO);
-                    rating.Fk_MovieId = dto.Id;
-                    await _context.AddRatingAsync(rating);
-                }
-
-                if (dto.StreamingServices != null)
-                {
-                    foreach (var streamingServiceDTO in dto.StreamingServices)
-                    {
-                        var streamingService = _mapper.Map<StreamingService>(streamingServiceDTO);
-                        streamingService.Fk_MovieId = dto.Id;
-                        await _context.AddStreamingServiceAsync(streamingService);
-                    }
-                }
-
                 _response.Result = _mapper.Map<MovieCreateDTO>(movie);
                 _response.StatusCode = HttpStatusCode.OK;
                 return CreatedAtAction(nameof(AddMovie), new {movie.Id}, _response);
