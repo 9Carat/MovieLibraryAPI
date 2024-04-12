@@ -10,7 +10,7 @@ namespace MovieLibraryAPI.Models
         public string Title { get; set; }
         [StringLength(25)]
         public string Runtime { get; set; }
-        [StringLength(25)]
+        [StringLength(50)]
         public string Genre { get; set; }
         [StringLength(50)]
         public string Director { get; set; }
