@@ -75,7 +75,7 @@ namespace MovieLibraryAPI.Controllers
             try
             {
                 //Check if movie has already been added
-                if (await _context.GetByMovieIdAsync(m => m.Title == dto.Title) != null)
+                if (await _context.GetByMovieIdAsync(m => m.Title == dto.Title && m.Fk_UserId == dto.Fk_UserId) != null)
                 {
                     ModelState.AddModelError("Error", "Movie already added to watchlist");
                     return BadRequest(ModelState);
