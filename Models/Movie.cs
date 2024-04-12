@@ -14,9 +14,9 @@ namespace MovieLibraryAPI.Models
         public string Genre { get; set; }
         [StringLength(50)]
         public string Director { get; set; }
-        [StringLength(50)]
-        public string Writer { get; set; }
         [StringLength(75)]
+        public string Writer { get; set; }
+        [StringLength(100)]
         public string Actors { get; set; }
         public string Plot { get; set; }
         [StringLength(25)]
